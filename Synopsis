@@ -1,0 +1,39 @@
+PROJECT SYNOPSIS
+
+1. Problem Statement
+Financial institutions face significant losses due to loan defaults, and manual credit assessment is slow, inconsistent, and prone to bias. Existing scoring methods are often opaque, making it difficult to justify approval or rejection decisions to regulators, auditors, and applicants. There is a need for a system that predicts loan default risk accurately while remaining interpretable, auditable, and fair across applicant groups.
+2. Objectives
+•To build a machine learning pipeline that predicts the probability of loan default from applicant and credit history data.
+•To compare multiple classification algorithms (Logistic Regression, Random Forest, XGBoost, LightGBM) using industry-standard credit-risk evaluation metrics.
+•To make model predictions explainable using SHAP, so that every accept/reject decision can be justified with feature-level reasoning.
+•To validate model robustness, fairness across demographic groups, and stability over time (population drift).
+•To deploy the trained model as a usable API and dashboard for loan-officer-style decision support.
+3. Proposed Solution / System Description
+The proposed system uses historical loan data to train and compare multiple machine learning models for default prediction, evaluated using industry-standard metrics such as ROC-AUC and the KS-statistic (Kolmogorov–Smirnov statistic), which is widely used in credit scoring to measure a model's ability to separate good and bad borrowers. SHAP (SHapley Additive exPlanations) values are integrated so that every individual prediction can be broken down into the contribution of each feature, satisfying the explainability requirements common in regulated lending environments.
+The final trained model is served through a FastAPI backend exposing a risk-scoring endpoint, paired with a Streamlit dashboard that allows a loan officer to enter applicant details and instantly view a risk score along with the top factors driving that score. The entire pipeline is containerised with Docker for portability.
+4. Literature Survey / Existing Approaches
+•Traditional credit scoring (e.g., FICO-style models) relies on manually engineered scorecards using logistic regression, which is interpretable but limited in capturing non-linear risk patterns.
+•Recent industry systems (Home Credit, Lending Club risk models) apply gradient-boosted trees (XGBoost/LightGBM) for higher predictive accuracy, but these are harder to explain to regulators and applicants.
+•SHAP and LIME have emerged as the standard tools for post-hoc explainability of black-box models in regulated domains such as lending and insurance.
+•This project combines the accuracy of boosted-tree models with SHAP-based explainability and drift monitoring, addressing a gap between pure accuracy-driven and pure interpretability-driven approaches.
+5. Methodology
+•Data Collection: Use a public credit-risk dataset (e.g., Home Credit Default Risk / Lending Club, Kaggle).
+•Data Preprocessing: Handle missing values, outliers, and class imbalance (SMOTE / class weighting).
+•Feature Engineering: Create domain features (debt-to-income ratio, credit utilisation) and apply WOE/IV encoding for categorical variables.
+•Model Building: Train and tune Logistic Regression (baseline/interpretable), Random Forest, XGBoost, and LightGBM.
+•Evaluation: Compare models using ROC-AUC, Precision-Recall, and the KS-statistic; select the best trade-off between accuracy and interpretability.
+•Explainability: Generate SHAP summary and force plots to explain global and individual predictions.
+•Validation: Cross-validate, check performance stability (PSI) and fairness across demographic subgroups.
+•Deployment: Expose the model via a FastAPI endpoint and a Streamlit dashboard, containerised with Docker.
+6. Tools & Technologies
+•Languages / Libraries: Python, pandas, scikit-learn, XGBoost, LightGBM, SHAP, imbalanced-learn
+•Visualization: Matplotlib, Seaborn, SHAP plots
+•Deployment: FastAPI, Streamlit, Docker
+•Experiment Tracking (optional): Optuna for hyperparameter tuning
+•Version Control: Git / GitHub
+7. Expected Outcome
+•A trained and validated machine learning model that predicts loan default risk with measurable accuracy (target ROC-AUC and KS-statistic benchmarks).
+•An explainability report showing feature-level reasoning for individual predictions (SHAP).
+•A fairness and drift-monitoring analysis demonstrating model robustness.
+•A working deployed prototype (API + dashboard) that a loan officer could use to generate and interpret a risk score.
+•A complete project report documenting problem, approach, results, and business impact — suitable for a portfolio and interviews.
